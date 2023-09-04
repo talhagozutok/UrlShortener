@@ -22,6 +22,9 @@ public class ApplicationDbContext : DbContext
         {
             builder.HasIndex(s => s.Code).IsUnique();
             builder.Property(s => s.Code).HasMaxLength(UrlShorteningService.NumberOfCharsInShortLink);
+
+            // Use case sensitive collation
+            builder.Property(s => s.Code).UseCollation("SQL_Latin1_General_CP1_CS_AS");
         });
     }
 }
