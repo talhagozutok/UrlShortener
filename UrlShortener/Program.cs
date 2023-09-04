@@ -33,7 +33,7 @@ app.MapPost("/api/shorten", async (
     ApplicationDbContext dbContext,
     HttpContext httpContext) =>
 {
-    if (!Uri.TryCreate(request.Url, UriKind.Absolute, out _))
+    if (!UriExtensions.IsValidUrl(request.Url))
     {
         Results.BadRequest("The specified URL is invalid");
     }
@@ -52,6 +52,7 @@ app.MapPost("/api/shorten", async (
     await dbContext.SaveChangesAsync();
 
     return Results.Ok($"{shortenedUrl.ShortUrl} paste in your browser.");
+
 });
 
 app.MapGet("/api/{code}", async (string code, ApplicationDbContext dbContext) =>
